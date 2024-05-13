@@ -6,7 +6,7 @@
 /*   By: oshcheho <oshcheho@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/27 14:53:09 by oshcheho          #+#    #+#             */
-/*   Updated: 2024/04/30 14:21:07 by oshcheho         ###   ########.fr       */
+/*   Updated: 2024/05/11 15:24:23 by oshcheho         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,39 +17,13 @@ size_t	ft_strlen(char const *s)
 	size_t	i;
 
 	i = 0;
+	if (!s)
+		return (0);
 	while (s[i] != '\0')
 	{
 		i++;
 	}
 	return (i);
-}
-
-char	*ft_strjoin(char const *s1, char const *s2)
-{
-	size_t	i;
-	size_t	j;
-	char	*res;
-
-	if (!s1 && !s2)
-		return (NULL);
-	res = malloc((ft_strlen(s1) + ft_strlen(s2) + 1) * sizeof(char));
-	if (!res)
-		return (NULL);
-	i = 0;
-	j = 0;
-	while (s1 && s1[i] != '\0')
-	{
-		res[i] = s1[i];
-		i++;
-	}
-	while (s2 && s2[j] != '\0')
-	{
-		res[i] = s2[j];
-		i++;
-		j++;
-	}
-	res[i] = '\0';
-	return (res);
 }
 
 char	*ft_strchr(const char *s, int c)
@@ -69,6 +43,8 @@ char	*ft_strchr(const char *s, int c)
 		return ((char *)&s[i]);
 	return (NULL);
 }
+
+
 
 char	*ft_substr(char const *s, unsigned int start, size_t len)
 {
@@ -95,12 +71,32 @@ char	*ft_substr(char const *s, unsigned int start, size_t len)
 	res[i] = '\0';
 	return (res);
 }
+char	*extract_right(char *str, int n)
+{
+	char	*res;
+	int i;
+
+	i = 0;
+//	printf("extract   %lu\n", ft_strlen(str) - n + 1);
+	res = (char *)malloc((ft_strlen(str) - n) + 1 * sizeof(char));
+	if (!res)
+		return (NULL);
+	while (str[n] != '\0')
+	{
+		res[i] = str[n];
+		i++;
+		n++;
+	}
+	res[i + 1] = '\0';
+	return (res);
+}
 
 char	*init_str(void)
 {
 	char	*res;
 
-	res = malloc(1 * sizeof(char));
+	res = malloc(1);
 	res[0] = '\0';
 	return (res);
+
 }
