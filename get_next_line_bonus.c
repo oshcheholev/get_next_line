@@ -1,16 +1,16 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   get_next_line.c                                    :+:      :+:    :+:   */
+/*   get_next_line_bonus.c                              :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: oshcheho <oshcheho@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2024/05/14 14:58:14 by oshcheho          #+#    #+#             */
-/*   Updated: 2024/05/22 13:06:58 by oshcheho         ###   ########.fr       */
+/*   Created: 2024/05/21 12:32:58 by oshcheho          #+#    #+#             */
+/*   Updated: 2024/05/22 13:07:33 by oshcheho         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "get_next_line.h"
+#include "get_next_line_bonus.h"
 
 void	free_and_null(char **str)
 {
@@ -49,7 +49,7 @@ char	*ft_strjoin(char *s1, char *s2)
 char	*get_left(char **buf)
 {
 	char	*left;
-	char	*temp;
+	char	*prev;
 	size_t	i;
 
 	i = 0;
@@ -64,9 +64,9 @@ char	*get_left(char **buf)
 		return (free_and_null(buf), NULL);
 	if (i == ft_strlen(*buf))
 		return (free_and_null(buf), left);
-	temp = *buf;
+	prev = *buf;
 	*buf = ft_substr(*buf, i, ft_strlen(*buf) - i);
-	free (temp);
+	free (prev);
 	return (left);
 }
 
@@ -96,12 +96,12 @@ char	*read_line(int fd, char *buf)
 
 char	*get_next_line(int fd)
 {
-	static char		*static_buf;
+	static char		*static_buf[MAX_FD];
 
-	if (fd < 0 || BUFFER_SIZE <= 0)
+	if (fd < 0 || fd > MAX_FD || BUFFER_SIZE <= 0)
 		return (NULL);
-	static_buf = read_line(fd, static_buf);
-	if (!static_buf)
+	static_buf[fd] = read_line(fd, static_buf[fd]);
+	if (!static_buf[fd])
 		return (NULL);
-	return (get_left(&static_buf));
+	return (get_left(&static_buf[fd]));
 }
